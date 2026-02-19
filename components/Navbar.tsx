@@ -10,6 +10,8 @@ const mainLinks: NavLink[] = [
   { label: "Photos", href: "/#gallery" },
   { label: "About Us", href: "/#about" },
   { label: "News", href: "/#news" },
+  { label: "Events", href: "/events" },
+  
 ];
 
 const membershipLinks: NavLink[] = [
