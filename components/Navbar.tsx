@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type NavLink = { label: string; href: string };
 
 const mainLinks: NavLink[] = [
-  { label: "Photos", href: "/#gallery" },     // ✅ scrolls to gallery on homepage
-  { label: "About Us", href: "/#about" },     // ✅ we’ll add id="about" below
-  { label: "News", href: "/news" },
+  { label: "Photos", href: "/#gallery" },
+  { label: "About Us", href: "/#about" },
+  { label: "News", href: "/#news" },
 ];
 
 const membershipLinks: NavLink[] = [
@@ -20,7 +21,17 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [membershipOpen, setMembershipOpen] = useState(false);
   const [membershipOpenMobile, setMembershipOpenMobile] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Show logo in header after scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 120);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -41,9 +52,37 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        {/* Brand */}
-        <Link href="/" className="text-base font-semibold tracking-tight" onClick={closeAll}>
-        
+        {/* Brand (logo appears here after scroll) */}
+        <Link
+          href="/"
+          onClick={closeAll}
+          aria-label="Nenyo Association Home"
+          className="flex items-center gap-3"
+        >
+          <div
+            className={`transition-all duration-300 ease-in-out ${
+              scrolled
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-75 pointer-events-none"
+            }`}
+          >
+            <Image
+              src="/logo/nenyo-logo.png"
+              alt="Nenyo Association Logo"
+              width={44}
+              height={44}
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          <span
+            className={`hidden sm:block text-base font-semibold tracking-tight transition-all duration-300 ${
+              scrolled ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+            }`}
+          >
+            Nenyo Association
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -127,7 +166,9 @@ export default function Navbar() {
                 aria-expanded={membershipOpenMobile}
               >
                 Membership
-                <span className="text-zinc-400">{membershipOpenMobile ? "▴" : "▾"}</span>
+                <span className="text-zinc-400">
+                  {membershipOpenMobile ? "▴" : "▾"}
+                </span>
               </button>
 
               {membershipOpenMobile && (

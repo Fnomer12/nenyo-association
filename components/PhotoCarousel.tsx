@@ -31,37 +31,28 @@ export default function PhotoCarousel({
           className="object-cover"
           priority
         />
-
+  
         {/* overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/0" />
-
-        {/* caption */}
-        <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
-          <div className="rounded-2xl bg-white/90 px-4 py-3 text-xs text-zinc-800 backdrop-blur">
-            <p className="text-sm font-semibold">Gallery</p>
-            <p className="mt-1 text-xs text-zinc-700">
-              Nenyo Association of Northern California
-            </p>
-          </div>
-
-          {/* dots */}
-          <div className="hidden items-center gap-2 sm:flex">
-            {safeImages.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Go to image ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={[
-                  "h-2.5 w-2.5 rounded-full border transition-all",
-                  i === index
-                    ? "border-white bg-white"
-                    : "border-white/60 bg-white/20 hover:bg-white/35",
-                ].join(" ")}
-              />
-            ))}
-          </div>
+  
+        {/* dots only */}
+        <div className="absolute bottom-5 right-5 hidden items-center gap-2 sm:flex">
+          {safeImages.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Go to image ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={[
+                "h-2.5 w-2.5 rounded-full border transition-all",
+                i === index
+                  ? "border-white bg-white"
+                  : "border-white/60 bg-white/20 hover:bg-white/35",
+              ].join(" ")}
+            />
+          ))}
         </div>
       </div>
     </div>
   );
+  
 }
