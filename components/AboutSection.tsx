@@ -21,9 +21,9 @@ export default function AboutSection({ active }: { active: boolean }) {
         </h2>
 
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 sm:text-base">
-          We are a community organization focused on unity, culture, support, and
-          development. Through mentorship, community programs, and local engagement,
-          we create opportunities for members and families to connect and thrive.
+        We are a community organization formed by Ewe natives from Ghana living in the diaspora. Our mission is to preserve our rich cultural heritage, promote unity, and build a strong support system for our members and their families.
+
+Through mentorship, cultural education, community programs, and local engagement, we create meaningful opportunities for connection, growth, and collective development — ensuring that our traditions remain alive while empowering the next generation to thrive wherever they are in the world.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
