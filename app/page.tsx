@@ -1,6 +1,7 @@
+// app/page.tsx
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import Navbar from "@/components/Navbar";
@@ -9,13 +10,14 @@ import PhotoCarousel from "@/components/PhotoCarousel";
 import AboutSection from "@/components/AboutSection";
 import { ArrowRight } from "lucide-react";
 
+/** ---------- InView hook ---------- */
 function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
     const el = ref.current;
+    if (!el) return;
 
     const obs = new IntersectionObserver(([entry]) => {
       setInView(entry.isIntersecting);
@@ -28,11 +30,89 @@ function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   return { ref, inView };
 }
 
+/** ---------- Types ---------- */
+type NewsItem = {
+  id: number;
+  title: string;
+  excerpt: string;
+  date: string;
+};
+
+/** ---------- Static presence map (image edited in Canva) ---------- */
+function WorldPresenceMap() {
+  return (
+    <section className="mt-12 sm:mt-16 bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6 mb-8">
+          <h2 className="text-xl sm:text-2xl font-semibold">Our Presence</h2>
+          
+        </div>
+
+        <img
+          src="/images/world-map.png"
+          alt="Nenyo Association Presence Map"
+          className="w-full h-auto object-contain"
+          loading="lazy"
+        />
+      </div>
+    </section>
+  );
+}
+
+/** ---------- Merch strip (1 shirt file + 1 cap file, same line, no borders) ---------- */
+function MerchStrip() {
+  /**
+   * Put these files in:
+   * public/merch/shirt.png
+   * public/merch/cap.png
+   *
+   * If your files are .jpg, change extensions below.
+   */
+  return (
+    <section className="mt-12 sm:mt-16 border-t border-zinc-200 bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-semibold">Official Merch</h2>
+            <p className="mt-1 text-sm text-zinc-600">
+              T-shirt and cap available for members and supporters.
+            </p>
+          </div>
+
+          {/* Optional: remove if you don't want a button here */}
+          
+        </div>
+
+        {/* same horizontal line, no borders, responsive */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-16">
+          <div className="group">
+            <img
+              src="/merch/nenyo-shirt.png"
+              alt="Nenyo T-Shirt"
+              className="h-[240px] sm:h-[280px] md:h-[320px] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="group">
+            <img
+              src="/merch/nenyo-cap.png"
+              alt="Nenyo Cap"
+              className="h-[240px] sm:h-[280px] md:h-[320px] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const gallery = useInView<HTMLDivElement>({ threshold: 0.35 });
   const about = useInView<HTMLDivElement>({ threshold: 0.25 });
 
-  const latestNews = useMemo(
+  const latestNews: NewsItem[] = useMemo(
     () => [
       {
         id: 1,
@@ -51,7 +131,8 @@ export default function HomePage() {
       {
         id: 3,
         title: "Membership Drive Now Open",
-        excerpt: "Become a member and enjoy exclusive benefits and event access.",
+        excerpt:
+          "Become a member and enjoy exclusive benefits and event access.",
         date: "February 10, 2026",
       },
     ],
@@ -75,7 +156,6 @@ export default function HomePage() {
         <div className="relative z-10 grid gap-10 sm:grid-cols-2 sm:items-center">
           {/* LEFT */}
           <div className="min-w-0">
-            {/* Home badge: always visible + never behind header */}
             <p className="mb-3 inline-flex rounded-full border border-zinc-200 px-3 py-1 text-xs sm:text-sm text-zinc-700 bg-white/90 backdrop-blur-sm shadow-sm">
               Home
             </p>
@@ -89,7 +169,6 @@ export default function HomePage() {
               connections across Northern California.
             </p>
 
-            {/* Buttons: side-by-side on ALL devices */}
             <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-4 max-w-md">
               <Link
                 href="/membership/registration"
@@ -98,12 +177,7 @@ export default function HomePage() {
                 Become a Member
               </Link>
 
-              <Link
-                href="/shop"
-                className="inline-flex items-center justify-center rounded-xl border border-zinc-200 text-zinc-900 hover:bg-zinc-50 px-4 py-3 text-sm"
-              >
-                Shop Now
-              </Link>
+              
             </div>
           </div>
 
@@ -133,7 +207,7 @@ export default function HomePage() {
               className="group inline-flex w-fit items-center gap-2 rounded-2xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             >
               View Gallery
-              <ArrowRight className="h-4 w-4 animate-arrow transition-transform duration-200 group-hover:translate-x-2" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-2" />
             </Link>
           </div>
 
@@ -161,10 +235,7 @@ export default function HomePage() {
       </section>
 
       {/* NEWS */}
-      <section
-        id="news"
-        className="mt-12 sm:mt-16 border-t border-zinc-200 bg-white"
-      >
+      <section id="news" className="mt-12 sm:mt-16 border-t border-zinc-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:py-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
             <h2 className="text-xl sm:text-2xl font-semibold">Latest News</h2>
@@ -174,13 +245,13 @@ export default function HomePage() {
               className="group inline-flex w-fit items-center gap-2 rounded-2xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
             >
               Headlines
-              <ArrowRight className="h-4 w-4 animate-arrow transition-transform duration-200 group-hover:translate-x-2" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-2" />
             </Link>
           </div>
 
           <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {latestNews.map((n) => (
-              <div
+              <article
                 key={n.id}
                 className="flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-5 sm:p-6 shadow-sm transition hover:shadow-md"
               >
@@ -200,14 +271,20 @@ export default function HomePage() {
                 >
                   Read More →
                 </Link>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
+      {/* MAP */}
+      <WorldPresenceMap />
+
+      {/* MERCH (1 shirt + 1 cap on same line, no borders) */}
+      <MerchStrip />
+
       {/* FOOTER */}
-      <footer className="border-t border-zinc-200">
+      <footer className="border-t border-zinc-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-sm text-zinc-600">
             © {new Date().getFullYear()} Nenyo Association of Northern California

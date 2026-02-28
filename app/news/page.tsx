@@ -94,12 +94,7 @@ export default function NewsPage() {
             </p>
           </div>
 
-          <Link
-            href="/#news"
-            className="hidden rounded-2xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 sm:inline-flex"
-          >
-            Back to News section
-          </Link>
+         
         </div>
 
         {/* ✅ Latest 3 on top */}

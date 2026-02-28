@@ -27,19 +27,14 @@ Through mentorship, cultural education, community programs, and local engagement
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <a
+        <a
             href="/about"
             className="rounded-xl bg-zinc-900 px-5 py-3 text-sm font-medium text-white hover:bg-zinc-800"
           >
             Learn More
           </a>
 
-          <a
-            href="/membership/registration"
-            className="rounded-xl border border-zinc-200 px-5 py-3 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
-          >
-            Become a Member
-          </a>
+         
         </div>
       </div>
     </div>
